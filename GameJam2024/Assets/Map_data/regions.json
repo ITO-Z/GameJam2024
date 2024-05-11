@@ -1,0 +1,56 @@
+{
+	"regions": [
+		{
+			"color": "#E27A7A",
+			"name": "Costoboci"
+		},
+		{
+			"color": "#257575",
+			"name": "Tyrageti"
+		},
+		{
+			"color": "#eec252",
+			"name": "Orase grecesti"
+		},
+		{
+			"color": "#5eee52",
+			"name": "Roxolani"
+		},
+		{
+			"color": "#26589b",
+			"name": "Origin"
+		},
+		{
+			"color": "#d752ee",
+			"name": "Bastarni"
+		},
+		{
+			"color": "#844615",
+			"name": "Triballi"
+		},
+		{
+			"color": "#7ae2d4",
+			"name": "Moesi"
+		},
+		{
+			"color": "#024914",
+			"name": "Geti"
+		},
+		{
+			"color": "#cc4914",
+			"name": "Teurisci"
+		},
+		{
+			"color": "#5e8d94",
+			"name": "Cauconi"
+		},
+		{
+			"color": "#671414",
+			"name": "Boii"
+		},
+		{
+			"color": "#f8f39c",
+			"name": "Hazigi"
+		}
+	]
+}
