@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class RegionIdentifier : MonoBehaviour
 {
+    [SerializeField] Region[] regions;
     [SerializeField] TextAsset regionsData;
     private void Start()
     {
@@ -30,6 +31,11 @@ public class RegionIdentifier : MonoBehaviour
                             colorFound = true;
                             //Debug.Log($"--------------{jsonReg.name}, {jsonReg.color}, #{ColorUtility.ToHtmlStringRGB(pixelColor)}");
                             child.name = jsonReg.name;
+                            foreach (var region in regions)
+                            {
+                                if (region.regionName == jsonReg.name)
+                                    child.GetComponent<RegionBehaviour>().region = region;
+                            }
                             break;
                         }
                     if (colorFound) break;

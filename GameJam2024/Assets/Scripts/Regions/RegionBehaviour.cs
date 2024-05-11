@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class RegionBehaviour : MonoBehaviour
 {
-
+    [HideInInspector] public Region region;
 }

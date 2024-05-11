@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class InteractableAnimation : MonoBehaviour
 {
+    [SerializeField] RegionBehaviour regionBehaviour;
     [SerializeField] Sprite selectedSprite;
     [SerializeField] Sprite selectedSprite2;
     [SerializeField] Sprite sprite;
@@ -54,12 +55,18 @@ public class InteractableAnimation : MonoBehaviour
         }
         else GetComponent<Image>().sprite = sprite;
     }
-    IEnumerator animate(AnimatedObject ao, float delay = 0f)
+    IEnumerator animate(AnimatedObject ao, float delay = 0f, bool externalActivation = false)
     {
         yield return new WaitForSeconds(delay);
 
         if (!ao.init)
-            ActivateObject(ao);
+            if (!externalActivation)
+                ActivateObject(ao);
+            else
+            {
+                if (ao.activateObj != animatedObjects[0].activateObj)
+                    ActivateObject(ao);
+            }
 
         if (ao.rect.gameObject == gameObject && animationSprites.Count != 0)
             if (ao.fin)
@@ -121,7 +128,6 @@ public class InteractableAnimation : MonoBehaviour
                 t += .05f;
             else
                 t += .03f;
-            Debug.Log(ao.curCol);
             ao.rect.GetComponent<Image>().color = ao.curCol;
 
             yield return new WaitForSeconds(timeBtwMoves);
@@ -141,7 +147,13 @@ public class InteractableAnimation : MonoBehaviour
                 animationActive = false;
             }
         if (ao.init)
-            ActivateObject(ao);
+            if (!externalActivation)
+                ActivateObject(ao);
+            else
+            {
+                if (ao.activateObj != animatedObjects[0].activateObj)
+                    ActivateObject(ao);
+            }
         ao.fin = !ao.fin;
         ao.init = !ao.init;
         ao.timesFinished++;
@@ -150,12 +162,16 @@ public class InteractableAnimation : MonoBehaviour
     void ActivateObject(AnimatedObject ao)
     {
         if (ao.activateObj != null)
+        {
             ao.activateObj.SetActive(!ao.fin);
+            if (ao.activateObj.transform.Find("NeededResources").GetComponent<NeededResourcesBhvr>() != null)
+                ao.activateObj.transform.Find("NeededResources").GetComponent<NeededResourcesBhvr>().UpdateInfo(regionBehaviour.region);
+        }
     }
     public void GoToInitState(AnimatedObject ao, float delay = 0)
     {
         if (ao.timesFinished % 2 == 1)
-            StartCoroutine(animate(ao, delay));
+            StartCoroutine(animate(ao, delay, true));
     }
     [System.Serializable]
     public class AnimatedObject

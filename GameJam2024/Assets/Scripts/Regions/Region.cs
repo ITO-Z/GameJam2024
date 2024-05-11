@@ -12,7 +12,14 @@ public class Region : ScriptableObject
 [System.Serializable]
 public class Need
 {
+    /*public enum Resources
+    {
+        Wood,
+        WoodenPlanks,
+    };
+    public Resources resource;*/
     public string name;
     public float value;
     public Sprite sprite;
+    public bool randomValue = true;
 }
