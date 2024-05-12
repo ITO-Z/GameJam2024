@@ -1,16 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class TimeManager : MonoBehaviour
 {
+    public enum TimeZone
+    {
+        US,
+        EU
+    }
+    public TimeZone timeZone;
     [SerializeField] float speed = 2;
     [SerializeField] bool secondsEqHours = false;
     [SerializeField] Clock clock;
+    [SerializeField] Text timeField;
+    [SerializeField] Text dateField;
+    [SerializeField] Light2D globalLight;
+    [SerializeField] bool dayNightCycle = false;
     private void Start()
     {
         clock.month = Clock.Month.January;
         StartCoroutine(RecordTime());
+    }
+    private void Update()
+    {
+        if (dayNightCycle)
+            StartCoroutine(DayNightCycle());
     }
     IEnumerator RecordTime()
     {
@@ -31,8 +48,12 @@ public class TimeManager : MonoBehaviour
             #endregion
             if (secondsEqHours)
             {
-                clock.hour++;
-                clock.minute = 0;
+                clock.minute += 30;
+                if (clock.minute >= 60)
+                {
+                    clock.minute = 0;
+                    clock.hour++;
+                }
             }
             else
             {
@@ -43,7 +64,7 @@ public class TimeManager : MonoBehaviour
                     clock.hour++;
                 }
             }
-            if (clock.hour > 24)
+            if (clock.hour >= 24)
             {
                 clock.hour = 0;
                 clock.day++;
@@ -52,7 +73,7 @@ public class TimeManager : MonoBehaviour
             {
                 clock.month = Clock.Month.January;
                 clock.day = 1;
-                if (clock.afterH)
+                if (clock.bc)
                     clock.year++;
                 else clock.year--;
                 if (IsLeapYear(clock.year))
@@ -65,17 +86,69 @@ public class TimeManager : MonoBehaviour
             }
 
 
-            if (clock.year == 0 && !clock.afterH)
-                clock.afterH = true;
+            if (clock.year == 0 && !clock.bc)
+                clock.bc = true;
+
+            if (timeZone == TimeZone.US)
+            {
+                // Convert clock.hour to 12-hour format
+                int hour12 = clock.hour % 12;
+                if (hour12 == 0)
+                    hour12 = 12; // 0 hour should be 12 in 12-hour format
+
+                // Determine if it's AM or PM
+                string amPm = (clock.hour >= 12 && clock.hour < 24) ? "pm" : "am";
+
+                // Update the timeField text
+                timeField.text = $"{hour12}:{(clock.minute < 10 ? "0" : "")}{clock.minute}{amPm}";
+            }
+            else if (timeZone == TimeZone.EU)
+            {
+                timeField.text = $"{(clock.hour % 24 < 10 ? "0" : "")}{clock.hour % 24}:{(clock.minute < 10 ? "0" : "")}{clock.minute}";
+            }
+            if (timeZone == TimeZone.US)
+                dateField.text = $"{(((int)clock.month + 1) < 10 ? "0" : "")}{((int)clock.month + 1)}/{(clock.day < 10 ? "0" : "")}{clock.day}/{clock.year} {(clock.bc ? "BC" : "AD")}";
+            else if (timeZone == TimeZone.EU)
+                dateField.text = $"{(clock.day < 10 ? "0" : "")}{clock.day}/{(((int)clock.month + 1) < 10 ? "0" : "")}{((int)clock.month + 1)}/{clock.year} {(clock.bc ? "BC" : "AD")}";
+
+            float half = 1f;
+            if (secondsEqHours)
+                half = 2;
             if (speed <= 0)
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(1f / half);
             else
-                yield return new WaitForSeconds(1f / speed);
+                yield return new WaitForSeconds((1f / half) / speed);
         }
     }
     public bool IsLeapYear(int year)
     {
         return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    }
+    float intensity = 0;
+    IEnumerator DayNightCycle()
+    {
+
+        float t = (clock.hour + (clock.minute == 30 ? .5f : 0)) / 12f;
+
+        if (t <= 1)
+        {
+            intensity = Mathf.Lerp(0.05f, 1, t);
+        }
+        else if (t > 1)
+        {
+            intensity = Mathf.Lerp(1, 0.05f, t - 1);
+        }
+        float initIntens = globalLight.intensity;
+
+        float t1 = 0;
+
+        while (globalLight.intensity != intensity)
+        {
+            globalLight.intensity = Mathf.Lerp(initIntens, intensity, t1);
+            t1 += .05f;
+            yield return new WaitForSeconds(.01f);
+        }
+
     }
 }
 
@@ -100,5 +173,5 @@ public class Clock
         December
     }
     public Month month;
-    public bool afterH = false;
+    public bool bc = false;
 }
