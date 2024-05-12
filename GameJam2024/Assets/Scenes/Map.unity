@@ -3028,7 +3028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23249b97bb533c94c82a9e79d62cea3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1000
+  speed: 2
   secondsEqHours: 1
   clock:
     hour: 0

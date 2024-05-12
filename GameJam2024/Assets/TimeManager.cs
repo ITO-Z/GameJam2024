@@ -55,6 +55,8 @@ public class TimeManager : MonoBehaviour
                 if (clock.afterH)
                     clock.year++;
                 else clock.year--;
+                if (IsLeapYear(clock.year))
+                    Debug.Log($"Year {clock.year} is a leap year");
             }
             if (clock.day - 1 == days)
             {
