@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d9425c9b1e993640b30459cc9f38f46, type: 3}
-  m_Name: Region_Teurisci
+  m_Name: Region_Boii
   m_EditorClassIdentifier: 
-  regionName: Teurisci
+  regionName: Boii
   needs:
-  - name: Logs
-    value: 34
-    sprite: {fileID: 21300000, guid: 813b5ac2c7af90f4b93d4cbdd684b606, type: 3}
-  - name: Planks
-    value: 454
-    sprite: {fileID: 21300000, guid: 3054da6d2633f674ba0776a72c87caab, type: 3}
+  - material: {fileID: 11400000, guid: c579ebe7f9512824ba61f780ea34c0a5, type: 2}
+    value: 343
+    randomValue: 1
+  - material: {fileID: 11400000, guid: 0efc3691a247c544c828f719a4f40e7f, type: 2}
+    value: 342
+    randomValue: 1

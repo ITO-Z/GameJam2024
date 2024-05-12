@@ -18,8 +18,7 @@ public class Need
         WoodenPlanks,
     };
     public Resources resource;*/
-    public string name;
-    public float value;
-    public Sprite sprite;
+    public MaterialSO material;
+    public int value;
     public bool randomValue = true;
 }

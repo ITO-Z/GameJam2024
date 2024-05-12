@@ -34,7 +34,10 @@ public class RegionIdentifier : MonoBehaviour
                             foreach (var region in regions)
                             {
                                 if (region.regionName == jsonReg.name)
+                                {
                                     child.GetComponent<RegionBehaviour>().region = region;
+                                    child.GetComponent<RegionBehaviour>().Init();
+                                }
                             }
                             break;
                         }

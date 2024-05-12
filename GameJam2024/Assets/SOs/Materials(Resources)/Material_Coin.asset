@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d9425c9b1e993640b30459cc9f38f46, type: 3}
-  m_Name: Region_Hazigi
+  m_Script: {fileID: 11500000, guid: 5782e46fe62652e49a600799fd6d1795, type: 3}
+  m_Name: Material_Coin
   m_EditorClassIdentifier: 
-  regionName: Hazigi
-  needs:
-  - name: Blueberries
-    value: 97
-    sprite: {fileID: 21300000, guid: 8e10b482a8443c949b90a88b0d73bf1e, type: 3}
+  icon: {fileID: 21300000, guid: 6b78da0e245370345a1a4d3994e9e066, type: 3}
+  materialName: Coin

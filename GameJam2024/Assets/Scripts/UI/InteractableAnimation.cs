@@ -8,7 +8,10 @@ public class InteractableAnimation : MonoBehaviour
     [SerializeField] RegionBehaviour regionBehaviour;
     [SerializeField] Sprite selectedSprite;
     [SerializeField] Sprite selectedSprite2;
-    [SerializeField] Sprite sprite;
+    Sprite sprite;
+    [SerializeField] Color32 selectedColor;
+    [SerializeField] bool hoverColor;
+    Color32 color;
     [SerializeField] List<Sprite> animationSprites;
     [SerializeField] UITest uiTest;
     [SerializeField] float timeBtwMoves;
@@ -16,14 +19,21 @@ public class InteractableAnimation : MonoBehaviour
     [SerializeField] List<AnimatedObject> animatedObjects = new List<AnimatedObject>();
     bool active;
     bool animationActive;
+    [HideInInspector] public bool inactive;
+    [SerializeField] Color32 inactiveColor;
     private void Start()
     {
         sprite = GetComponent<Image>().sprite;
+        color = GetComponent<Image>().color;
         foreach (var o in animatedObjects)
         {
             o.initPos = o.rect.localPosition;
             o.initRot = o.rect.localEulerAngles;
-            o.initCol = o.rect.GetComponent<Image>().color;
+            if (!hoverColor)
+                o.initCol = o.rect.GetComponent<Image>().color;
+            else
+                o.initCol = selectedColor;
+
             o.curPos = o.initPos;
             o.curCol = o.initCol;
             o.curRot = o.initRot;
@@ -31,32 +41,46 @@ public class InteractableAnimation : MonoBehaviour
     }
     private void Update()
     {
-        if (uiTest.isOverAnimatedImage && uiTest.RaycastResult(uiTest.AnimatedImageLayer) == gameObject)
-        {
-
-            if (!active && !animationActive && selectedSprite != null)
-                GetComponent<Image>().sprite = selectedSprite;
-            else GetComponent<Image>().sprite = sprite;
-            if (Input.GetMouseButtonDown(0) && !active)
+        if (!inactive)
+            if (uiTest.isOverAnimatedImage && uiTest.RaycastResult(uiTest.AnimatedImageLayer) == gameObject)
             {
-                for (int i = 0; i < animations.Count; i++)
+
+                if (!active && !animationActive && selectedSprite != null)
+                    GetComponent<Image>().sprite = selectedSprite;
+                else GetComponent<Image>().sprite = sprite;
+
+                if (!active && !animationActive && hoverColor && !animatedObjects[0].colorAnimation)
+                    GetComponent<Image>().color = selectedColor;
+
+                if (Input.GetMouseButtonDown(0) && !active)
                 {
-                    for (int j = 0; j < animations[i].animatedObjects.Count; j++)
+                    for (int i = 0; i < animations.Count; i++)
                     {
-                        animations[i].GoToInitState(animations[i].animatedObjects[j], .05f * j);
+                        for (int j = 0; j < animations[i].animatedObjects.Count; j++)
+                        {
+                            animations[i].GoToInitState(animations[i].animatedObjects[j], .05f * j);
+                        }
+                    }
+                    StartCoroutine(animate(animatedObjects[0]));
+                    for (int i = 1; i < animatedObjects.Count; i++)
+                    {
+                        StartCoroutine(animate(animatedObjects[i], .05f * i));
                     }
                 }
-                StartCoroutine(animate(animatedObjects[0]));
-                for (int i = 1; i < animatedObjects.Count; i++)
-                {
-                    StartCoroutine(animate(animatedObjects[i], .05f * i));
-                }
             }
-        }
-        else GetComponent<Image>().sprite = sprite;
+            else
+            {
+                GetComponent<Image>().sprite = sprite;
+                if (hoverColor && !animatedObjects[0].colorAnimation)
+                    GetComponent<Image>().color = color;
+            }
+        else
+            GetComponent<Image>().color = inactiveColor;
     }
     IEnumerator animate(AnimatedObject ao, float delay = 0f, bool externalActivation = false)
     {
+        if (ao.colorAnimation)
+            ao.colorAnimation = !ao.colorAnimation;
         yield return new WaitForSeconds(delay);
 
         if (!ao.init)
@@ -118,9 +142,9 @@ public class InteractableAnimation : MonoBehaviour
             yield return new WaitForSeconds(timeBtwMoves);
         }
         t = 0;
-
         while (ao.rect.GetComponent<Image>().color != ao.finalCol)
         {
+            ao.colorAnimation = true;
             ao.curCol = Color32.Lerp(ao.initCol, ao.finalCol, t);
             if (t >= .7f || t <= .3f)
                 t += .04f;
@@ -132,6 +156,7 @@ public class InteractableAnimation : MonoBehaviour
 
             yield return new WaitForSeconds(timeBtwMoves);
         }
+
         if (ao.rect.gameObject == gameObject && animationSprites.Count != 0)
             if (ao.init)
             {
@@ -158,25 +183,30 @@ public class InteractableAnimation : MonoBehaviour
         ao.init = !ao.init;
         ao.timesFinished++;
         active = false;
+        if (externalActivation)
+            ao.colorAnimation = false;
     }
     void ActivateObject(AnimatedObject ao)
     {
         if (ao.activateObj != null)
         {
             ao.activateObj.SetActive(!ao.fin);
-            if (ao.activateObj.transform.Find("NeededResources").GetComponent<NeededResourcesBhvr>() != null)
-                ao.activateObj.transform.Find("NeededResources").GetComponent<NeededResourcesBhvr>().UpdateInfo(regionBehaviour.region);
+            if (ao.activateObj.transform.Find("NeededResources").GetComponent<RegionInfoBhvr>() != null)
+                ao.activateObj.transform.Find("NeededResources").GetComponent<RegionInfoBhvr>().UpdateListInfo(regionBehaviour.region, regionBehaviour.generatedMaterials);
         }
     }
     public void GoToInitState(AnimatedObject ao, float delay = 0)
     {
         if (ao.timesFinished % 2 == 1)
+        {
             StartCoroutine(animate(ao, delay, true));
+        }
     }
     [System.Serializable]
     public class AnimatedObject
     {
         public bool firstTrigger = true;
+        [HideInInspector] public bool colorAnimation = false;
         [HideInInspector] public bool fin = false;
         [HideInInspector] public bool init = true;
         [HideInInspector] public int timesFinished = 0;

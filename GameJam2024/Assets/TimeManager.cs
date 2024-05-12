@@ -15,10 +15,19 @@ public class TimeManager : MonoBehaviour
     [SerializeField] float speed = 2;
     [SerializeField] bool secondsEqHours = false;
     [SerializeField] Clock clock;
-    [SerializeField] Text timeField;
-    [SerializeField] Text dateField;
     [SerializeField] Light2D globalLight;
     [SerializeField] bool dayNightCycle = false;
+
+    [Header("TextFields")]
+    [SerializeField] Text timeField;
+    [SerializeField] Text dateField;
+    [SerializeField] public date dateData;
+    [SerializeField] RegionBehaviour[] regionBehaviours;
+    [System.Serializable]
+    public struct date
+    {
+        public bool day, month, year;
+    };
     private void Start()
     {
         clock.month = Clock.Month.January;
@@ -68,6 +77,10 @@ public class TimeManager : MonoBehaviour
             {
                 clock.hour = 0;
                 clock.day++;
+                foreach (var regionBhvr in regionBehaviours)
+                {
+                    regionBhvr.GenerateMaterials(50);
+                }
             }
             if (clock.month == Clock.Month.December && clock.day - 1 == days)
             {
@@ -88,28 +101,36 @@ public class TimeManager : MonoBehaviour
 
             if (clock.year == 0 && !clock.bc)
                 clock.bc = true;
+            if (timeField != null)
+                if (timeZone == TimeZone.US)
+                {
+                    // Convert clock.hour to 12-hour format
+                    int hour12 = clock.hour % 12;
+                    if (hour12 == 0)
+                        hour12 = 12; // 0 hour should be 12 in 12-hour format
 
-            if (timeZone == TimeZone.US)
+                    // Determine if it's AM or PM
+                    string amPm = (clock.hour >= 12 && clock.hour < 24) ? "pm" : "am";
+
+                    // Update the timeField text
+                    timeField.text = $"{hour12}:{(clock.minute < 10 ? "0" : "")}{clock.minute}{amPm}";
+                }
+                else if (timeZone == TimeZone.EU)
+                {
+                    timeField.text = $"{(clock.hour % 24 < 10 ? "0" : "")}{clock.hour % 24}:{(clock.minute < 10 ? "0" : "")}{clock.minute}";
+                }
+            if (dateField != null)
             {
-                // Convert clock.hour to 12-hour format
-                int hour12 = clock.hour % 12;
-                if (hour12 == 0)
-                    hour12 = 12; // 0 hour should be 12 in 12-hour format
+                if (dateData.day && dateData.month && dateData.year)
+                {
+                    dateField.text = $"{clock.day}, {clock.month}, {clock.year}, {(clock.bc ? "BC" : "AD")}";
+                }
+                else if (dateData.month && dateData.year)
+                    dateField.text = $"{clock.month}, {clock.year}, {(clock.bc ? "BC" : "AD")}";
+                else if (dateData.year)
+                    dateField.text = $"{clock.year}, {(clock.bc ? "BC" : "AD")}";
 
-                // Determine if it's AM or PM
-                string amPm = (clock.hour >= 12 && clock.hour < 24) ? "pm" : "am";
-
-                // Update the timeField text
-                timeField.text = $"{hour12}:{(clock.minute < 10 ? "0" : "")}{clock.minute}{amPm}";
             }
-            else if (timeZone == TimeZone.EU)
-            {
-                timeField.text = $"{(clock.hour % 24 < 10 ? "0" : "")}{clock.hour % 24}:{(clock.minute < 10 ? "0" : "")}{clock.minute}";
-            }
-            if (timeZone == TimeZone.US)
-                dateField.text = $"{(((int)clock.month + 1) < 10 ? "0" : "")}{((int)clock.month + 1)}/{(clock.day < 10 ? "0" : "")}{clock.day}/{clock.year} {(clock.bc ? "BC" : "AD")}";
-            else if (timeZone == TimeZone.EU)
-                dateField.text = $"{(clock.day < 10 ? "0" : "")}{clock.day}/{(((int)clock.month + 1) < 10 ? "0" : "")}{((int)clock.month + 1)}/{clock.year} {(clock.bc ? "BC" : "AD")}";
 
             float half = 1f;
             if (secondsEqHours)

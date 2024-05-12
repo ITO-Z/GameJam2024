@@ -10,13 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d9425c9b1e993640b30459cc9f38f46, type: 3}
-  m_Name: Region_Moesi
+  m_Name: Region_Triballi
   m_EditorClassIdentifier: 
-  regionName: Moesi
+  regionName: Triballi
   needs:
-  - name: Stones
-    value: 75
-    sprite: {fileID: 21300000, guid: ecc770c84467a784db742528f089a2c8, type: 3}
-  - name: Coins
-    value: 56
-    sprite: {fileID: 21300000, guid: 6b78da0e245370345a1a4d3994e9e066, type: 3}
+  - material: {fileID: 11400000, guid: 0efc3691a247c544c828f719a4f40e7f, type: 2}
+    value: 99
+    randomValue: 1

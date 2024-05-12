@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d9425c9b1e993640b30459cc9f38f46, type: 3}
-  m_Name: Region_OraseGrecesti
+  m_Name: Region_Moesi
   m_EditorClassIdentifier: 
-  regionName: Orase grecesti
+  regionName: Moesi
   needs:
-  - name: Stones
-    value: 900
-    sprite: {fileID: 21300000, guid: ecc770c84467a784db742528f089a2c8, type: 3}
-  - name: Blueberries
-    value: 12
-    sprite: {fileID: 21300000, guid: 8e10b482a8443c949b90a88b0d73bf1e, type: 3}
+  - material: {fileID: 11400000, guid: c579ebe7f9512824ba61f780ea34c0a5, type: 2}
+    value: 75
+    randomValue: 1
+  - material: {fileID: 11400000, guid: c68a1942da5f2fa489599ae0b053447c, type: 2}
+    value: 56
+    randomValue: 1
