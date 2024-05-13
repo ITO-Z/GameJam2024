@@ -79,7 +79,7 @@ public class TimeManager : MonoBehaviour
                 clock.day++;
                 foreach (var regionBhvr in regionBehaviours)
                 {
-                    regionBhvr.GenerateMaterials(50);
+                    regionBhvr.GenerateMaterials();
                 }
             }
             if (clock.month == Clock.Month.December && clock.day - 1 == days)

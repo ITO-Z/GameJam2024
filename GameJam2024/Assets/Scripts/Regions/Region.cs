@@ -20,5 +20,4 @@ public class Need
     public Resources resource;*/
     public MaterialSO material;
     public int value;
-    public bool randomValue = true;
 }

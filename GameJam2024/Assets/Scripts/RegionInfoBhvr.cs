@@ -11,10 +11,15 @@ public class RegionInfoBhvr : MonoBehaviour
 
     [SerializeField] GameObject materialGeneratedPrefab;
     [SerializeField] Transform materialsGeneratedList;
-    public void UpdateListInfo(Region region, List<MaterialSO> genMats)
+
+    [SerializeField] Button buyButton;
+    [SerializeField] GameObject buyButtonParent;
+    public void UpdateListInfo(Region region, List<RegionBehaviour.GenerateMaterialsWithAmount> genMats, RegionBehaviour regBhvr)
     {
         #region DestroyPastInfo
         List<GameObject> delete = new List<GameObject>();
+        buyButton.onClick.RemoveAllListeners();
+
         for (int i = 0; i < needsList.childCount; i++)
         {
             delete.Add(needsList.GetChild(i).gameObject);
@@ -29,6 +34,16 @@ public class RegionInfoBhvr : MonoBehaviour
         }
         #endregion
         regionTitle.text = region.regionName;
+
+        if (regBhvr.conquered)
+            buyButtonParent.SetActive(false);
+        else
+            buyButtonParent.SetActive(true);
+        if (regBhvr != null)
+        {
+            buyButton.onClick.AddListener(regBhvr.BuyRegion);
+        }
+
         for (int i = 0; i < region.needs.Count; i++)
         {
             var need = Instantiate(needPrefab, needsList);
@@ -38,14 +53,15 @@ public class RegionInfoBhvr : MonoBehaviour
 
             needIcon.sprite = region.needs[i].material.icon;
             needName.text = region.needs[i].material.materialName;
-            needValue.text = ((int)Random.Range(region.needs[i].value, region.needs[i].value + 250)).ToString();
+            needValue.text = region.needs[i].value.ToString();
         }
         for (int i = 0; i < genMats.Count; i++)
         {
             if (i >= genMats.Capacity)
                 break;
             var mat = Instantiate(materialGeneratedPrefab, materialsGeneratedList);
-            mat.transform.GetChild(0).GetComponent<Image>().sprite = genMats[i].icon;
+            mat.transform.GetChild(0).GetComponent<Image>().sprite = genMats[i].matSo.icon;
+            mat.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = $"x{genMats[i].amount}";
         }
     }
 }
