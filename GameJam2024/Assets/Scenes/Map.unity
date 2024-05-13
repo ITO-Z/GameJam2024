@@ -457,6 +457,9 @@ MonoBehaviour:
     amount: 5
   neededConqueredRegions: 4
   conquered: 0
+  canBeConquered:
+    neededMaterials: 0
+    neededRegionsConq: 0
 --- !u!1 &70674074
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,9 +495,9 @@ RectTransform:
   m_Father: {fileID: 301098137}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &70674076
 MonoBehaviour:
@@ -950,6 +953,9 @@ MonoBehaviour:
     amount: 5
   neededConqueredRegions: 4
   conquered: 0
+  canBeConquered:
+    neededMaterials: 0
+    neededRegionsConq: 0
 --- !u!1 &270568244
 GameObject:
   m_ObjectHideFlags: 0
@@ -1111,10 +1117,10 @@ RectTransform:
   - {fileID: 331182060}
   m_Father: {fileID: 454010601}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 164.43}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 238.57, y: -599.485}
+  m_SizeDelta: {x: 477.14, y: 164.43}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &301098139
 MonoBehaviour:
@@ -1484,7 +1490,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &454010601
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1508,7 +1514,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 531.15, y: 0}
-  m_SizeDelta: {x: 477.14, y: 0}
+  m_SizeDelta: {x: 477.14, y: 776.66003}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &454010602
 MonoBehaviour:
@@ -1715,7 +1721,7 @@ RectTransform:
   m_Father: {fileID: 537326376}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1788,10 +1794,10 @@ RectTransform:
   - {fileID: 184170698}
   m_Father: {fileID: 454010601}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 176.05}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 238.57, y: -88.025}
+  m_SizeDelta: {x: 477.14, y: 176.05}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &537326375
 GameObject:
@@ -1981,10 +1987,10 @@ RectTransform:
   - {fileID: 559777986}
   m_Father: {fileID: 454010601}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 94.96}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 238.57, y: -729.18}
+  m_SizeDelta: {x: 477.14, y: 94.96}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &673644857
 GameObject:
@@ -2649,9 +2655,9 @@ RectTransform:
   m_Father: {fileID: 1210297419}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &958380741
 MonoBehaviour:
@@ -2877,6 +2883,9 @@ MonoBehaviour:
     amount: 5
   neededConqueredRegions: 6
   conquered: 0
+  canBeConquered:
+    neededMaterials: 0
+    neededRegionsConq: 0
 --- !u!1 &997523823
 GameObject:
   m_ObjectHideFlags: 0
@@ -3230,6 +3239,9 @@ MonoBehaviour:
     amount: 5
   neededConqueredRegions: 1
   conquered: 0
+  canBeConquered:
+    neededMaterials: 0
+    neededRegionsConq: 0
 --- !u!1 &1100897675
 GameObject:
   m_ObjectHideFlags: 0
@@ -3403,6 +3415,9 @@ MonoBehaviour:
     amount: 5
   neededConqueredRegions: 4
   conquered: 0
+  canBeConquered:
+    neededMaterials: 0
+    neededRegionsConq: 0
 --- !u!1 &1115107834
 GameObject:
   m_ObjectHideFlags: 0
@@ -3689,6 +3704,9 @@ MonoBehaviour:
     amount: 5
   neededConqueredRegions: 3
   conquered: 0
+  canBeConquered:
+    neededMaterials: 0
+    neededRegionsConq: 0
 --- !u!1 &1210297418
 GameObject:
   m_ObjectHideFlags: 0
@@ -3724,10 +3742,10 @@ RectTransform:
   - {fileID: 270568245}
   m_Father: {fileID: 454010601}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 180.3}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 238.57, y: -346.66}
+  m_SizeDelta: {x: 477.14, y: 180.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1210297420
 MonoBehaviour:
@@ -3985,6 +4003,9 @@ MonoBehaviour:
     amount: 10
   neededConqueredRegions: 1
   conquered: 0
+  canBeConquered:
+    neededMaterials: 0
+    neededRegionsConq: 0
 --- !u!114 &1229444677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4521,6 +4542,9 @@ MonoBehaviour:
     amount: 5
   neededConqueredRegions: 6
   conquered: 0
+  canBeConquered:
+    neededMaterials: 0
+    neededRegionsConq: 0
 --- !u!1 &1488511764
 GameObject:
   m_ObjectHideFlags: 0
@@ -4780,6 +4804,9 @@ MonoBehaviour:
     amount: 5
   neededConqueredRegions: 8
   conquered: 0
+  canBeConquered:
+    neededMaterials: 0
+    neededRegionsConq: 0
 --- !u!1 &1536622189
 GameObject:
   m_ObjectHideFlags: 0
@@ -4889,7 +4916,7 @@ RectTransform:
   m_Father: {fileID: 1854897096}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5179,6 +5206,9 @@ MonoBehaviour:
     amount: 5
   neededConqueredRegions: 2
   conquered: 0
+  canBeConquered:
+    neededMaterials: 0
+    neededRegionsConq: 0
 --- !u!1 &1774752634
 GameObject:
   m_ObjectHideFlags: 0
@@ -5211,10 +5241,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 454010601}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 80.46}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 238.57, y: -477.04}
+  m_SizeDelta: {x: 477.14, y: 80.46}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1774752636
 MonoBehaviour:
@@ -5467,6 +5497,9 @@ MonoBehaviour:
     amount: 5
   neededConqueredRegions: 1
   conquered: 0
+  canBeConquered:
+    neededMaterials: 0
+    neededRegionsConq: 0
 --- !u!1 &1906272552
 GameObject:
   m_ObjectHideFlags: 0
@@ -5743,6 +5776,9 @@ MonoBehaviour:
     amount: 5
   neededConqueredRegions: 5
   conquered: 0
+  canBeConquered:
+    neededMaterials: 0
+    neededRegionsConq: 0
 --- !u!1 &1941976329
 GameObject:
   m_ObjectHideFlags: 0
@@ -5824,10 +5860,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 454010601}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 80.46}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 238.57, y: -216.28}
+  m_SizeDelta: {x: 477.14, y: 80.46}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1995926806
 MonoBehaviour:
@@ -6130,6 +6166,9 @@ MonoBehaviour:
     amount: 5
   neededConqueredRegions: 5
   conquered: 0
+  canBeConquered:
+    neededMaterials: 0
+    neededRegionsConq: 0
 --- !u!1 &2062335968
 GameObject:
   m_ObjectHideFlags: 0
