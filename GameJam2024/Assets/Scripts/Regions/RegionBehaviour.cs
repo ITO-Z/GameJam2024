@@ -8,17 +8,20 @@ public class RegionBehaviour : MonoBehaviour
     [SerializeField] bool startingRegion;
     [HideInInspector] List<RegionAvailableMatForBuy> availableMatsForBuy = new List<RegionAvailableMatForBuy>();
     [SerializeField] PlayerStats stats;
-    public List<MaterialSO> generatedMaterials = new List<MaterialSO>(4);
+    public List<GenerateMaterialsWithAmount> generatedMaterials = new List<GenerateMaterialsWithAmount>(4);
     [SerializeField] [Range(1, 12)] int neededConqueredRegions;
-    bool conquered;
-    struct canBeConq
+    [SerializeField] public bool conquered;
+    [System.Serializable]
+    public struct canBeConq
     {
         public bool neededMaterials, neededRegionsConq;
     };
-    canBeConq canBeConquered;
+    [SerializeField] canBeConq canBeConquered;
     public void Init()
     {
-        if (!startingRegion)
+        conquered = startingRegion;
+        transform.GetChild(0).gameObject.SetActive(conquered);
+        if (!conquered)
         {
             foreach (var o in region.needs)
             {
@@ -27,8 +30,12 @@ public class RegionBehaviour : MonoBehaviour
                 q.matSo = o.material;
                 availableMatsForBuy.Add(q);
             }
-            InvokeRepeating("CheckAvailability", .1f, .1f);
         }
+    }
+    private void FixedUpdate()
+    {
+        if (!conquered)
+            CheckAvailability();
     }
     void CheckAvailability()
     {
@@ -66,13 +73,14 @@ public class RegionBehaviour : MonoBehaviour
             canBeConquered.neededRegionsConq = true;
         else canBeConquered.neededRegionsConq = false;
 
-        if (!canBeConquered.neededMaterials || !canBeConquered.neededRegionsConq)
-            GetComponent<InteractableAnimation>().inactive = true;
-        else if (canBeConquered.neededMaterials && canBeConquered.neededRegionsConq)
-            GetComponent<InteractableAnimation>().inactive = false;
+        if (!startingRegion)
+            GetComponent<InteractableAnimation>().inactive = !canBeConquered.neededRegionsConq;
     }
+    [ContextMenu("Buy Region")]
     public void BuyRegion()
     {
+        if (conquered)
+            return;
         CheckAvailability();
         if (canBeConquered.neededMaterials && canBeConquered.neededRegionsConq)
         {
@@ -89,11 +97,13 @@ public class RegionBehaviour : MonoBehaviour
                 }
             }
             conquered = true;
+            stats.conqueredRegions++;
+            transform.GetChild(0).gameObject.SetActive(true);
         }
     }
     //could use some more polish
     //is invoked every day
-    public void GenerateMaterials(int amount)
+    public void GenerateMaterials()
     {
         if (conquered || startingRegion)
         {
@@ -102,10 +112,9 @@ public class RegionBehaviour : MonoBehaviour
                 foreach (var res in stats.resources)
                 {
                     //Debug.Log($"{mat.materialName}, {res.matSo.materialName}");
-                    if (res.matSo == mat)
+                    if (res.matSo == mat.matSo)
                     {
-                        Debug.Log("ok");
-                        res.amount += amount;
+                        res.amount += mat.amount;
                         break;
                     }
                 }
@@ -117,5 +126,11 @@ public class RegionBehaviour : MonoBehaviour
     {
         public MaterialSO matSo;
         public bool enough = false;
+    }
+    [System.Serializable]
+    public class GenerateMaterialsWithAmount
+    {
+        public MaterialSO matSo;
+        [Range(1, 999)] public int amount;
     }
 }

@@ -191,8 +191,8 @@ public class InteractableAnimation : MonoBehaviour
         if (ao.activateObj != null)
         {
             ao.activateObj.SetActive(!ao.fin);
-            if (ao.activateObj.transform.Find("NeededResources").GetComponent<RegionInfoBhvr>() != null)
-                ao.activateObj.transform.Find("NeededResources").GetComponent<RegionInfoBhvr>().UpdateListInfo(regionBehaviour.region, regionBehaviour.generatedMaterials);
+            if (ao.activateObj.GetComponent<RegionInfoBhvr>() != null)
+                ao.activateObj.GetComponent<RegionInfoBhvr>().UpdateListInfo(regionBehaviour.region, regionBehaviour.generatedMaterials, GetComponent<RegionBehaviour>());
         }
     }
     public void GoToInitState(AnimatedObject ao, float delay = 0)

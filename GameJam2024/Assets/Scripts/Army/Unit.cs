@@ -21,7 +21,8 @@ public class Unit : MonoBehaviour
     }
     */
 
-    public enum Team{Ally, Enemy};
+
+    public enum Team { Ally, Enemy };
     public Team team;
     public int health;
     public int damage;
@@ -35,52 +36,72 @@ public class Unit : MonoBehaviour
     private Vector2 movePosition;
     bool started = false;
 
-    void Awake(){
+    void Awake()
+    {
+        var col = GetComponent<PolygonCollider2D>();
+        if (col != null)
+        {
+            Destroy(col);
+            col = gameObject.AddComponent<PolygonCollider2D>();
+        }
+        else
+            col = gameObject.AddComponent<PolygonCollider2D>();
+
         movePosition = transform.position;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if(team == Team.Ally) spriteRenderer.color = Color.blue;
+        if (team == Team.Ally) spriteRenderer.color = Color.blue;
         else spriteRenderer.color = Color.red;
 
         selectedGameObject = transform.Find("Selected").gameObject;
         SetSelectedVisible(false);
     }
 
-    public void SetSelectedVisible(bool visible){
+
+    public void SetSelectedVisible(bool visible)
+    {
         selectedGameObject.SetActive(visible);
     }
 
-    private void Update() {
+    private void Update()
+    {
 
         var step = speed * Time.deltaTime;
         transform.position = Vector2.MoveTowards(transform.position, movePosition, step);
 
-       /* if (Vector2.Distance(transform.position, movePosition) < 0.001f)
+        /* if (Vector2.Distance(transform.position, movePosition) < 0.001f)
+         {
+             movePosition *= -1.0f;
+         }*/
+        if (target != null && !started && transform.position.x - movePosition.x <= .01f && Vector2.Distance(transform.position, movePosition) <= .01f)
         {
-            movePosition *= -1.0f;
-        }*/
-        if(target != null && !started && transform.position.x - movePosition.x <= .01f && transform.position.y - movePosition.y <= .01f){
             StartCoroutine("TakeThatCunt");
             started = true;
         }
     }
 
-    public void MoveTo(Vector2 movePosition){
+
+    public void MoveTo(Vector2 movePosition)
+    {
         this.movePosition = movePosition;
         Debug.Log("Moving to " + movePosition.ToString());
     }
 
-    public void Attack(Vector2 movePosition, Unit target){
+    public void Attack(Vector2 movePosition, Unit target)
+    {
         this.movePosition = movePosition;
         this.target = target;
         Debug.Log("Target locked");
     }
 
-    private IEnumerator TakeThatCunt(){
-        while(true){
+    private IEnumerator TakeThatCunt()
+    {
+        while (true)
+        {
             yield return new WaitForSeconds(attackSpeed);
             target.health -= this.damage;
-            if(target.health <= 0){
+            if (target.health <= 0)
+            {
                 Destroy(target.gameObject);
                 started = false;
                 StopAllCoroutines();
