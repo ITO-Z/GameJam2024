@@ -73,7 +73,7 @@ public class Unit : MonoBehaviour
          {
              movePosition *= -1.0f;
          }*/
-        if (target != null && !started && transform.position.x - movePosition.x <= .01f && Vector2.Distance(transform.position, movePosition) <= .01f)
+        if (target != null && !started && Vector2.Distance(transform.position, movePosition) <= .01f)
         {
             StartCoroutine("TakeThatCunt");
             started = true;
@@ -99,6 +99,8 @@ public class Unit : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(attackSpeed);
+            if (target == null)
+                break;
             target.health -= this.damage;
             if (target.health <= 0)
             {

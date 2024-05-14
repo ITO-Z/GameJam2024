@@ -12,12 +12,13 @@ public class TimeManager : MonoBehaviour
         EU
     }
     public TimeZone timeZone;
-    [SerializeField] float speed = 2;
+    [SerializeField] float speed = 50;
+    float ffSpeed = 150;
     [SerializeField] bool secondsEqHours = false;
     [SerializeField] Clock clock;
     [SerializeField] Light2D globalLight;
     [SerializeField] bool dayNightCycle = false;
-
+    int dayCounter = 0;
     [Header("TextFields")]
     [SerializeField] Text timeField;
     [SerializeField] Text dateField;
@@ -30,6 +31,7 @@ public class TimeManager : MonoBehaviour
     };
     private void Start()
     {
+        ffSpeed = speed + 100;
         clock.month = Clock.Month.January;
         StartCoroutine(RecordTime());
     }
@@ -38,6 +40,7 @@ public class TimeManager : MonoBehaviour
         if (dayNightCycle)
             StartCoroutine(DayNightCycle());
     }
+    bool generated = false;
     IEnumerator RecordTime()
     {
         while (true)
@@ -55,6 +58,16 @@ public class TimeManager : MonoBehaviour
                 else days = 28;
             }
             #endregion
+
+            if (dayCounter % 7 == 0 && !generated)
+            {
+                foreach (var regionBhvr in regionBehaviours)
+                {
+                    regionBhvr.GenerateMaterials();
+                }
+                generated = true;
+            }
+
             if (secondsEqHours)
             {
                 clock.minute += 30;
@@ -76,11 +89,9 @@ public class TimeManager : MonoBehaviour
             if (clock.hour >= 24)
             {
                 clock.hour = 0;
+                dayCounter++;
                 clock.day++;
-                foreach (var regionBhvr in regionBehaviours)
-                {
-                    regionBhvr.GenerateMaterials();
-                }
+                generated = false;
             }
             if (clock.month == Clock.Month.December && clock.day - 1 == days)
             {
@@ -170,6 +181,13 @@ public class TimeManager : MonoBehaviour
             yield return new WaitForSeconds(.01f);
         }
 
+    }
+
+    public void FastForwardTime()
+    {
+        float aux = speed;
+        speed = ffSpeed;
+        ffSpeed = aux;
     }
 }
 

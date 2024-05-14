@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Region_Origin
   m_EditorClassIdentifier: 
   regionName: Origin
-  needs: []
+  needs:
+  - material: {fileID: 11400000, guid: c68a1942da5f2fa489599ae0b053447c, type: 2}
+    value: 10

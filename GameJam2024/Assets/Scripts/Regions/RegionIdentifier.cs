@@ -9,6 +9,11 @@ public class RegionIdentifier : MonoBehaviour
     [SerializeField] TextAsset regionsData;
     private void Start()
     {
+        Identify();
+    }
+    [ContextMenu("Identify Regions")]
+    private void Identify()
+    {
         JsonRegions jsonRegions = JsonUtility.FromJson<JsonRegions>(regionsData.text);
 
         for (int j = 0; j < transform.childCount; j++)

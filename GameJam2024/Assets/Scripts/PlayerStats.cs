@@ -5,12 +5,12 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     public List<Resource> resources;
-    public int conqueredRegions = 1;
+    public int conqueredRegions = 0;
 
     [System.Serializable]
     public class Resource
     {
         public MaterialSO matSo;
-        public int amount;
+        public float amount;
     }
 }
