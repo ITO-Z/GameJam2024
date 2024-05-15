@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(PolygonCollider2D))]
 public class Unit : MonoBehaviour
 {
     /*
@@ -21,7 +22,6 @@ public class Unit : MonoBehaviour
     }
     */
 
-
     public enum Team { Ally, Enemy };
     public Team team;
     public int health;
@@ -38,15 +38,6 @@ public class Unit : MonoBehaviour
 
     void Awake()
     {
-        var col = GetComponent<PolygonCollider2D>();
-        if (col != null)
-        {
-            Destroy(col);
-            col = gameObject.AddComponent<PolygonCollider2D>();
-        }
-        else
-            col = gameObject.AddComponent<PolygonCollider2D>();
-
         movePosition = transform.position;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -96,19 +87,20 @@ public class Unit : MonoBehaviour
 
     private IEnumerator TakeThatCunt()
     {
-        while (true)
+        while (target != null && target.health > 0)
         {
-            yield return new WaitForSeconds(attackSpeed);
-            if (target == null)
-                break;
-            target.health -= this.damage;
-            if (target.health <= 0)
-            {
-                Destroy(target.gameObject);
+            if (Vector2.Distance(transform.position, movePosition) >= .01f){
                 started = false;
                 StopAllCoroutines();
+                break;
             }
+            target.health -= this.damage;
             Debug.Log("Take that cunt!");
+            yield return new WaitForSeconds(attackSpeed);
+        }
+
+        if(target != null && target.health <= 0){
+            Destroy(target.gameObject);
         }
     }
 

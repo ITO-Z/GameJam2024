@@ -20,7 +20,6 @@ public class UnitController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             selectionAreaTransform.gameObject.SetActive(true);
-
             startPosition = mouseWorldPosition();
         }
 
@@ -33,19 +32,31 @@ public class UnitController : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             selectionAreaTransform.gameObject.SetActive(false);
-            Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(startPosition, mouseWorldPosition());
+            Collider2D[] collider2DArray;
+            if(Vector2.Distance(startPosition, mouseWorldPosition()) >= 0.1){
+                collider2DArray = new Collider2D[]{};
+                collider2DArray = Physics2D.OverlapAreaAll(startPosition, mouseWorldPosition());
+                Debug.Log(collider2DArray);
+            }
+            else{
+                collider2DArray = new Collider2D[1];
+                collider2DArray[0] = Physics2D.OverlapPoint(mouseWorldPosition());
+                if(collider2DArray[0] == null) collider2DArray = new Collider2D[]{};
+            }
+
 
             foreach (Unit unit in selectedUnitList)
             {
                 unit.SetSelectedVisible(false);
                 SpriteRenderer unitRenderer = unit.gameObject.GetComponent<SpriteRenderer>();
-                unitRenderer.sortingOrder = 5;
+                unitRenderer.sortingOrder = 1;
             }
 
             selectedUnitList.Clear();
 
             foreach (Collider2D collider2D in collider2DArray)
             {
+                Debug.Log(collider2D.GetComponent<Unit>());
                 Unit unit = collider2D.GetComponent<Unit>();
                 if (unit.team == Unit.Team.Ally)
                 {
@@ -68,16 +79,26 @@ public class UnitController : MonoBehaviour
                 Unit unit = collider2D.GetComponent<Unit>();
                 if (unit != null && unit.team == Unit.Team.Enemy)
                 {
+                    Debug.Log("Attack");
                     foreach (Unit my_unit in selectedUnitList)
                     {
-                        my_unit.Attack(new Vector2(unit.transform.position.x + offset, unit.transform.position.y), unit);
+                        Vector2 direction = (unit.transform.position - my_unit.transform.position).normalized;
+                        Vector2 offsetPosition = new Vector2(unit.transform.position.x - direction.x * offset, unit.transform.position.y - direction.y * offset);
+                        my_unit.Attack(offsetPosition, unit);
                     }
                 }
                 else
                 {
+                    Debug.Log("Move");
                     foreach (Unit my_unit in selectedUnitList)
                     {
-                        my_unit.MoveTo(moveToPosition);
+                        if(selectedUnitList.Count == 1){
+                            if(unit.team == Unit.Team.Ally)
+                                my_unit.MoveTo(moveToPosition + Random.insideUnitCircle * 0.5f);
+                            else
+                                my_unit.MoveTo(moveToPosition);
+                        }
+                        else my_unit.MoveTo(moveToPosition + Random.insideUnitCircle * 1.2f);
                     }
                 }
             }
@@ -85,7 +106,10 @@ public class UnitController : MonoBehaviour
             {
                 foreach (Unit unit in selectedUnitList)
                 {
-                    unit.MoveTo(moveToPosition + Random.insideUnitCircle * 1.5f);
+                    if(selectedUnitList.Count == 1){
+                        unit.MoveTo(moveToPosition);
+                    }
+                    else unit.MoveTo(moveToPosition + Random.insideUnitCircle * 1.5f);
                 }
             }
 
