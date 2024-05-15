@@ -15,8 +15,8 @@ MonoBehaviour:
   regionName: Teurisci
   needs:
   - material: {fileID: 11400000, guid: c579ebe7f9512824ba61f780ea34c0a5, type: 2}
-    value: 34
-    randomValue: 1
+    value: 2079
   - material: {fileID: 11400000, guid: 0efc3691a247c544c828f719a4f40e7f, type: 2}
-    value: 454
-    randomValue: 1
+    value: 4195
+  - material: {fileID: 11400000, guid: c68a1942da5f2fa489599ae0b053447c, type: 2}
+    value: 303

@@ -44,3 +44,6 @@ TagManager:
   - name: UI/Map
     uniqueID: 2283840449
     locked: 0
+  - name: UI/DokiBure
+    uniqueID: 1112571215
+    locked: 0

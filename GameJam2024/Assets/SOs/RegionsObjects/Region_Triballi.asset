@@ -15,4 +15,4 @@ MonoBehaviour:
   regionName: Triballi
   needs:
   - material: {fileID: 11400000, guid: 0efc3691a247c544c828f719a4f40e7f, type: 2}
-    value: 100
+    value: 1200

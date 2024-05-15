@@ -15,8 +15,10 @@ MonoBehaviour:
   regionName: Orase grecesti
   needs:
   - material: {fileID: 11400000, guid: c579ebe7f9512824ba61f780ea34c0a5, type: 2}
-    value: 900
-    randomValue: 1
+    value: 5187
   - material: {fileID: 11400000, guid: c68a1942da5f2fa489599ae0b053447c, type: 2}
-    value: 1000
-    randomValue: 1
+    value: 600
+  - material: {fileID: 11400000, guid: 0efc3691a247c544c828f719a4f40e7f, type: 2}
+    value: 12115
+  - material: {fileID: 11400000, guid: 279690130d16aab46a7f46fe6a8df7fb, type: 2}
+    value: 200

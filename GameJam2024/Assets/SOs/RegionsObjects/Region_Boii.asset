@@ -15,8 +15,8 @@ MonoBehaviour:
   regionName: Boii
   needs:
   - material: {fileID: 11400000, guid: c579ebe7f9512824ba61f780ea34c0a5, type: 2}
-    value: 343
-    randomValue: 1
+    value: 3147
   - material: {fileID: 11400000, guid: 0efc3691a247c544c828f719a4f40e7f, type: 2}
-    value: 342
-    randomValue: 1
+    value: 22700
+  - material: {fileID: 11400000, guid: 279690130d16aab46a7f46fe6a8df7fb, type: 2}
+    value: 500

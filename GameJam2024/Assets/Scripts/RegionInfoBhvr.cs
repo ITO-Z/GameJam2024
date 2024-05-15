@@ -54,7 +54,7 @@ public class RegionInfoBhvr : MonoBehaviour
             var resAmount = upgradeButtonParent.transform.Find("Resource").GetChild(0).GetChild(0).GetComponent<Text>();
 
             resIcon.sprite = regBhvr.upgradeMaterial.icon;
-            resAmount.text = $"x{regBhvr.upgradeCost:F1}";
+            resAmount.text = "x" + StatViewer.ValueToStringCompact(regBhvr.upgradeCost);
 
             needsListParent.SetActive(false);
             needsTitle.SetActive(false);
@@ -85,7 +85,7 @@ public class RegionInfoBhvr : MonoBehaviour
 
             needIcon.sprite = region.needs[i].material.icon;
             needName.text = region.needs[i].material.materialName;
-            needValue.text = region.needs[i].value.ToString();
+            needValue.text = StatViewer.ValueToStringCompact(region.needs[i].value);
         }
         for (int i = 0; i < genMats.Count; i++)
         {
@@ -93,7 +93,7 @@ public class RegionInfoBhvr : MonoBehaviour
             if (!regBhvr.CheckForReqLevel(genMats[i])) continue;
             var mat = Instantiate(materialGeneratedPrefab, materialsGeneratedList);
             mat.transform.GetChild(0).GetComponent<Image>().sprite = genMats[i].matSo.icon;
-            mat.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = $"x{regBhvr.ModifyMaterialAmountByLevel(genMats[i]):F1}";
+            mat.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "x" + StatViewer.ValueToStringCompact(regBhvr.ModifyMaterialAmountByLevel(genMats[i]));
         }
     }
 }

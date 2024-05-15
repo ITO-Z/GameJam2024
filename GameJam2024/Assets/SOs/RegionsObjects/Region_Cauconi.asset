@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   regionName: Cauconi
   needs:
+  - material: {fileID: 11400000, guid: 128e2322b8e800f4abb1e4e26075159d, type: 2}
+    value: 9528
   - material: {fileID: 11400000, guid: c579ebe7f9512824ba61f780ea34c0a5, type: 2}
-    value: 3434
-    randomValue: 1
+    value: 847

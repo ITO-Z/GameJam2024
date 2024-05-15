@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5782e46fe62652e49a600799fd6d1795, type: 3}
   m_Name: Material_Log
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 813b5ac2c7af90f4b93d4cbdd684b606, type: 3}
+  icon: {fileID: 21300000, guid: 05f78548e048cb04a80c770ead2f53d3, type: 3}
   materialName: Log

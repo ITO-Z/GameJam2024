@@ -15,8 +15,8 @@ MonoBehaviour:
   regionName: Tyrageti
   needs:
   - material: {fileID: 11400000, guid: c579ebe7f9512824ba61f780ea34c0a5, type: 2}
-    value: 234
-    randomValue: 1
+    value: 1163
   - material: {fileID: 11400000, guid: c68a1942da5f2fa489599ae0b053447c, type: 2}
-    value: 54
-    randomValue: 1
+    value: 354
+  - material: {fileID: 11400000, guid: 279690130d16aab46a7f46fe6a8df7fb, type: 2}
+    value: 172

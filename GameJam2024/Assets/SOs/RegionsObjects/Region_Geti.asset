@@ -15,5 +15,6 @@ MonoBehaviour:
   regionName: Geti
   needs:
   - material: {fileID: 11400000, guid: 0efc3691a247c544c828f719a4f40e7f, type: 2}
-    value: 900
-    randomValue: 1
+    value: 8341
+  - material: {fileID: 11400000, guid: c68a1942da5f2fa489599ae0b053447c, type: 2}
+    value: 200

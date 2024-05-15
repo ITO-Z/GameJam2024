@@ -5,6 +5,7 @@ using UnityEngine;
 public class RegionBehaviour : MonoBehaviour
 {
     [HideInInspector] public Region region;
+    [SerializeField] LogMessages log;
     [HideInInspector] List<RegionAvailableMatForBuy> availableMatsForBuy = new List<RegionAvailableMatForBuy>();
     [SerializeField] PlayerStats stats;
     public List<GenerateMaterialsWithAmount> generatedMaterials = new List<GenerateMaterialsWithAmount>(4);
@@ -14,7 +15,8 @@ public class RegionBehaviour : MonoBehaviour
 
     public int level = 1;
     public MaterialSO upgradeMaterial;
-    public int upgradeCost = 0;
+    public float upgradeCost = 0;
+    float upCostConst = 0;
     [System.Serializable]
     public struct canBeConq
     {
@@ -40,18 +42,18 @@ public class RegionBehaviour : MonoBehaviour
         for (int i = 0; i < region.needs.Count; i++)
         {
             var need = region.needs[i];
-            upCostConst += need.value;
+            upCostConst += need.value / need.value.ToString().ToCharArray().Length;
         }
-        upgradeCost = Mathf.FloorToInt(upCostConst * level / (2.5f + region.needs.Count));
+        upgradeCost = upCostConst * level / (2.5f + region.needs.Count);
         if (upgradeCost < 5)
             upgradeCost = 5;
     }
-    int upCostConst = 0;
     private void FixedUpdate()
     {
         if (!conquered)
             CheckAvailability();
     }
+    bool logged;
     void CheckAvailability()
     {
         //check for materials
@@ -85,7 +87,14 @@ public class RegionBehaviour : MonoBehaviour
         }
         //check for neededConqueredRegions
         if (stats.conqueredRegions >= neededConqueredRegions)
+        {
             canBeConquered.neededRegionsConq = true;
+            if (!logged)
+            {
+                logged = true;
+                log.SendMessageInLog($"{region.regionName} is now conquerable.");
+            }
+        }
         else canBeConquered.neededRegionsConq = false;
 
         GetComponent<InteractableAnimation>().inactive = !canBeConquered.neededRegionsConq;
@@ -114,7 +123,10 @@ public class RegionBehaviour : MonoBehaviour
             stats.conqueredRegions++;
             transform.GetChild(0).gameObject.SetActive(true);
             infoBhvr.UpdateListInfo(region, generatedMaterials, this);
+            log.SendMessageInLog($"{region.regionName} accepted your offer!", LogMessages.typeOfLogMessage.normal);
         }
+        else log.SendMessageInLog($"Not enough resources to buy {region.regionName}", LogMessages.typeOfLogMessage.warning);
+
     }
 
     public void UpgradeRegion()
@@ -136,19 +148,19 @@ public class RegionBehaviour : MonoBehaviour
                 {
                     level++;
                     resource.amount -= upgradeCost;
-                    Debug.Log($"Upgraded {gameObject.name} to level {level}");
+                    log.SendMessageInLog($"Upgraded {gameObject.name} to level {level}");
                 }
-                else Debug.Log($"Not enough {upgradeMaterial.materialName}(s)");
+                else log.SendMessageInLog($"Not enough {upgradeMaterial.materialName}(s) to upgrade {region.regionName}", LogMessages.typeOfLogMessage.warning);
             }
         }
-        upgradeCost = Mathf.FloorToInt(upCostConst * level / 2.5f);
+        upgradeCost = upCostConst * level / (2.5f + region.needs.Count);
         if (upgradeCost < 5)
             upgradeCost = 5;
         infoBhvr.UpdateListInfo(region, generatedMaterials, this);
     }
 
     //could use some more polish
-    //is invoked every day
+    //is invoked every week
     public void GenerateMaterials()
     {
         if (conquered)
@@ -169,7 +181,7 @@ public class RegionBehaviour : MonoBehaviour
     }
     public float ModifyMaterialAmountByLevel(GenerateMaterialsWithAmount mat)
     {
-        return mat.amount + (mat.amount * ((level + (upgradeCost / 10f)) / 10f));
+        return mat.amount + (level - mat.levelNeededToGenerate) * (upgradeCost / 100f);
     }
     public bool CheckForReqLevel(GenerateMaterialsWithAmount mat)
     {

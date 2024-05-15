@@ -27,7 +27,7 @@ public class StatViewer : MonoBehaviour
             resViewValues.Add(temp);
         }
     }
-    string ValueToStringCompact(float amount)
+    static public string ValueToStringCompact(float amount)
     {
         if (amount >= 1000)
         {

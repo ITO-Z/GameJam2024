@@ -24,6 +24,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] Text dateField;
     [SerializeField] public date dateData;
     [SerializeField] RegionBehaviour[] regionBehaviours;
+    [SerializeField] LogMessages log;
     [System.Serializable]
     public struct date
     {
@@ -70,8 +71,16 @@ public class TimeManager : MonoBehaviour
 
             if (secondsEqHours)
             {
-                clock.minute += 30;
-                if (clock.minute >= 60)
+                if (speed != (speed + 100))
+                {
+                    clock.minute += 30;
+                    if (clock.minute >= 60)
+                    {
+                        clock.minute = 0;
+                        clock.hour++;
+                    }
+                }
+                else
                 {
                     clock.minute = 0;
                     clock.hour++;
@@ -84,6 +93,7 @@ public class TimeManager : MonoBehaviour
                 {
                     clock.minute = 0;
                     clock.hour++;
+                    Events();
                 }
             }
             if (clock.hour >= 24)
@@ -92,16 +102,17 @@ public class TimeManager : MonoBehaviour
                 dayCounter++;
                 clock.day++;
                 generated = false;
+                Events();
             }
             if (clock.month == Clock.Month.December && clock.day - 1 == days)
             {
                 clock.month = Clock.Month.January;
                 clock.day = 1;
-                if (clock.bc)
+                if (!clock.bc)
                     clock.year++;
                 else clock.year--;
                 if (IsLeapYear(clock.year))
-                    Debug.Log($"Year {clock.year} is a leap year");
+                    log.SendMessageInLog($"Year {clock.year} is a leap year.", LogMessages.typeOfLogMessage.eveniment);
             }
             if (clock.day - 1 == days)
             {
@@ -110,8 +121,8 @@ public class TimeManager : MonoBehaviour
             }
 
 
-            if (clock.year == 0 && !clock.bc)
-                clock.bc = true;
+            if (clock.year == 0 && clock.bc)
+                clock.bc = false;
             if (timeField != null)
                 if (timeZone == TimeZone.US)
                 {
@@ -134,12 +145,12 @@ public class TimeManager : MonoBehaviour
             {
                 if (dateData.day && dateData.month && dateData.year)
                 {
-                    dateField.text = $"{clock.day}, {clock.month}, {clock.year}, {(clock.bc ? "BC" : "AD")}";
+                    dateField.text = $"{clock.day}, {clock.month}, {clock.year}, {(clock.bc ? "BC" : "AC")}";
                 }
                 else if (dateData.month && dateData.year)
-                    dateField.text = $"{clock.month}, {clock.year}, {(clock.bc ? "BC" : "AD")}";
+                    dateField.text = $"{clock.month}, {clock.year}, {(clock.bc ? "BC" : "AC")}";
                 else if (dateData.year)
-                    dateField.text = $"{clock.year}, {(clock.bc ? "BC" : "AD")}";
+                    dateField.text = $"{clock.year}, {(clock.bc ? "BC" : "AC")}";
 
             }
 
@@ -182,12 +193,51 @@ public class TimeManager : MonoBehaviour
         }
 
     }
-
+    bool[] events = { false, false, false, false, false, false };
+    public void Events()
+    {
+        if (clock.year == 82 && !events[0] && clock.bc)
+        {
+            events[0] = true;
+            log.SendMessageInLog("Year 82 BC. Burebista rises to power and starts centralizing the Dacian tribes.", LogMessages.typeOfLogMessage.eveniment);
+        }
+        if (clock.year == 75 && !events[1] && clock.bc)
+        {
+            events[1] = true;
+            log.SendMessageInLog("Year 75 BC. Burebista consolidates his power and implements reforms within the Dacian Kingdom.", LogMessages.typeOfLogMessage.eveniment);
+        }
+        if (clock.year == 61 && !events[2] && clock.bc)
+        {
+            events[2] = true;
+            log.SendMessageInLog("Year 61 BC. Burebista establishes diplomatic relations with the Roman Republic to secure his kingdom's borders.", LogMessages.typeOfLogMessage.eveniment);
+        }
+        if (clock.year == 55 && !events[3] && clock.bc)
+        {
+            events[3] = true;
+            log.SendMessageInLog("Year 55 BC. Relations between the Dacian and Roman Republics deteriorate due to territorial disputes and tensions along the Danube frontier.", LogMessages.typeOfLogMessage.eveniment);
+        }
+        if (clock.year == 50 && !events[4] && clock.bc)
+        {
+            events[4] = true;
+            log.SendMessageInLog("Year 50 BC. Burebista strengthens Dacia's military and fortifies its borders in preparation for potential conflicts with the Roman Republic.", LogMessages.typeOfLogMessage.eveniment);
+        }
+        if (clock.year == 44 && !events[5] && clock.bc)
+        {
+            events[5] = true;
+            log.SendMessageInLog("Year 44 BC. Burebista is assassinated, leading to a power vacuum and internal strife within Dacia as rival factions compete for control.", LogMessages.typeOfLogMessage.eveniment);
+            StartCoroutine(DelayEnd());
+        }
+    }
     public void FastForwardTime()
     {
         float aux = speed;
         speed = ffSpeed;
         ffSpeed = aux;
+    }
+    IEnumerator DelayEnd()
+    {
+        yield return new WaitForSeconds(2.5f);
+        Camera.main.GetComponent<GameManager>().EndGame(false);
     }
 }
 
@@ -212,5 +262,5 @@ public class Clock
         December
     }
     public Month month;
-    public bool bc = false;
+    public bool bc = true;
 }

@@ -15,8 +15,10 @@ MonoBehaviour:
   regionName: Moesi
   needs:
   - material: {fileID: 11400000, guid: c579ebe7f9512824ba61f780ea34c0a5, type: 2}
-    value: 75
-    randomValue: 1
+    value: 2334
   - material: {fileID: 11400000, guid: c68a1942da5f2fa489599ae0b053447c, type: 2}
-    value: 56
-    randomValue: 1
+    value: 125
+  - material: {fileID: 11400000, guid: 0efc3691a247c544c828f719a4f40e7f, type: 2}
+    value: 12115
+  - material: {fileID: 11400000, guid: 128e2322b8e800f4abb1e4e26075159d, type: 2}
+    value: 1239

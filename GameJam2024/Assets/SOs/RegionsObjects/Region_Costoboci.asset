@@ -15,11 +15,8 @@ MonoBehaviour:
   regionName: Costoboci
   needs:
   - material: {fileID: 11400000, guid: c579ebe7f9512824ba61f780ea34c0a5, type: 2}
-    value: 30
-    randomValue: 1
+    value: 8900
   - material: {fileID: 11400000, guid: 279690130d16aab46a7f46fe6a8df7fb, type: 2}
-    value: 55
-    randomValue: 1
+    value: 1600
   - material: {fileID: 11400000, guid: 128e2322b8e800f4abb1e4e26075159d, type: 2}
-    value: 34
-    randomValue: 1
+    value: 18421
