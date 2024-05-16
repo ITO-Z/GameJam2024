@@ -6,25 +6,20 @@ using UnityEngine.UI;
 
 public class TimeManager : MonoBehaviour
 {
-    public enum TimeZone
-    {
-        US,
-        EU
-    }
-    public TimeZone timeZone;
-    [SerializeField] float speed = 50;
-    float ffSpeed = 150;
-    [SerializeField] bool secondsEqHours = false;
-    [SerializeField] Clock clock;
-    [SerializeField] Light2D globalLight;
-    [SerializeField] bool dayNightCycle = false;
-    int dayCounter = 0;
+    bool ff = false;
+    [Tooltip("duration in seconds")] [SerializeField] float duration = 5;
+    [SerializeField] int paymentsPerMonth = 5;
+    [SerializeField] bool timeInDays = false;
+    [SerializeField] bool timeInMonths = false;
+    [SerializeField] bool timeInYears = false;
+    public Clock clock;
     [Header("TextFields")]
     [SerializeField] Text timeField;
     [SerializeField] Text dateField;
     [SerializeField] public date dateData;
     [SerializeField] RegionBehaviour[] regionBehaviours;
     [SerializeField] LogMessages log;
+    float durationCopy;
     [System.Serializable]
     public struct date
     {
@@ -32,20 +27,43 @@ public class TimeManager : MonoBehaviour
     };
     private void Start()
     {
-        ffSpeed = speed + 100;
+        durationCopy = duration;
         clock.month = Clock.Month.January;
-        StartCoroutine(RecordTime());
+        UpdateDateField();
     }
     private void Update()
     {
-        if (dayNightCycle)
-            StartCoroutine(DayNightCycle());
+        StartCoroutine(RecordTime()); //records time in months
+        StartCoroutine(Generate());
     }
-    bool generated = false;
+    bool generating = false;
+    IEnumerator Generate()
+    {
+        if (!generating)
+        {
+            generating = true;
+            yield return new WaitForSeconds(durationCopy / paymentsPerMonth);
+            foreach (var reg in regionBehaviours)
+            {
+                if (reg.conquered)
+                {
+                    reg.GenerateMaterials();
+                }
+            }
+
+            generating = false;
+        }
+        else yield return null;
+    }
+    bool startedRec = false;
     IEnumerator RecordTime()
     {
-        while (true)
+        if (!startedRec)
         {
+            startedRec = true;
+            durationCopy = duration / (ff ? 2f : 1f);
+            yield return new WaitForSeconds(durationCopy);
+            Camera.main.GetComponent<GameManager>().SaveGame();
             #region Days
             int days = 0;
             if (clock.month == Clock.Month.January || clock.month == Clock.Month.March || clock.month == Clock.Month.May || clock.month == Clock.Month.July || clock.month == Clock.Month.August || clock.month == Clock.Month.October || clock.month == Clock.Month.December)
@@ -59,140 +77,56 @@ public class TimeManager : MonoBehaviour
                 else days = 28;
             }
             #endregion
-
-            if (dayCounter % 7 == 0 && !generated)
-            {
-                foreach (var regionBhvr in regionBehaviours)
-                {
-                    regionBhvr.GenerateMaterials();
-                }
-                generated = true;
-            }
-
-            if (secondsEqHours)
-            {
-                if (speed != (speed + 100))
-                {
-                    clock.minute += 30;
-                    if (clock.minute >= 60)
-                    {
-                        clock.minute = 0;
-                        clock.hour++;
-                    }
-                }
-                else
-                {
-                    clock.minute = 0;
-                    clock.hour++;
-                }
-            }
-            else
-            {
-                clock.minute++;
-                if (clock.minute >= 60)
-                {
-                    clock.minute = 0;
-                    clock.hour++;
-                    Events();
-                }
-            }
-            if (clock.hour >= 24)
-            {
-                clock.hour = 0;
-                dayCounter++;
+            if (timeInDays)
                 clock.day++;
-                generated = false;
-                Events();
-            }
-            if (clock.month == Clock.Month.December && clock.day - 1 == days)
-            {
-                clock.month = Clock.Month.January;
-                clock.day = 1;
+            if (timeInMonths)
+                clock.month++;
+            if (timeInYears)
                 if (!clock.bc)
                     clock.year++;
                 else clock.year--;
+
+            if (clock.day >= days)
+                clock.month++;
+
+            if ((int)clock.month >= 12)
+            {
+                clock.month = Clock.Month.January;
+                if (!clock.bc)
+                    clock.year++;
+                else clock.year--;
+
                 if (IsLeapYear(clock.year))
                     log.SendMessageInLog($"Year {clock.year} is a leap year.", LogMessages.typeOfLogMessage.eveniment);
             }
-            if (clock.day - 1 == days)
-            {
-                clock.day = 1;
-                clock.month++;
-            }
-
 
             if (clock.year == 0 && clock.bc)
                 clock.bc = false;
-            if (timeField != null)
-                if (timeZone == TimeZone.US)
-                {
-                    // Convert clock.hour to 12-hour format
-                    int hour12 = clock.hour % 12;
-                    if (hour12 == 0)
-                        hour12 = 12; // 0 hour should be 12 in 12-hour format
+            UpdateDateField();
 
-                    // Determine if it's AM or PM
-                    string amPm = (clock.hour >= 12 && clock.hour < 24) ? "pm" : "am";
-
-                    // Update the timeField text
-                    timeField.text = $"{hour12}:{(clock.minute < 10 ? "0" : "")}{clock.minute}{amPm}";
-                }
-                else if (timeZone == TimeZone.EU)
-                {
-                    timeField.text = $"{(clock.hour % 24 < 10 ? "0" : "")}{clock.hour % 24}:{(clock.minute < 10 ? "0" : "")}{clock.minute}";
-                }
-            if (dateField != null)
+            startedRec = false;
+        }
+        else yield return null;
+    }
+    void UpdateDateField()
+    {
+        if (dateField != null)
+        {
+            if (dateData.day && dateData.month && dateData.year)
             {
-                if (dateData.day && dateData.month && dateData.year)
-                {
-                    dateField.text = $"{clock.day}, {clock.month}, {clock.year}, {(clock.bc ? "BC" : "AC")}";
-                }
-                else if (dateData.month && dateData.year)
-                    dateField.text = $"{clock.month}, {clock.year}, {(clock.bc ? "BC" : "AC")}";
-                else if (dateData.year)
-                    dateField.text = $"{clock.year}, {(clock.bc ? "BC" : "AC")}";
-
+                dateField.text = $"{clock.day}, {clock.month}, {clock.year}, {(clock.bc ? "BC" : "AC")}";
             }
-
-            float half = 1f;
-            if (secondsEqHours)
-                half = 2;
-            if (speed <= 0)
-                yield return new WaitForSeconds(1f / half);
-            else
-                yield return new WaitForSeconds((1f / half) / speed);
+            else if (dateData.month && dateData.year)
+                dateField.text = $"{clock.month}, {clock.year}, {(clock.bc ? "BC" : "AC")}";
+            else if (dateData.year)
+                dateField.text = $"{clock.year}, {(clock.bc ? "BC" : "AC")}";
         }
     }
     public bool IsLeapYear(int year)
     {
         return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     }
-    float intensity = 0;
-    IEnumerator DayNightCycle()
-    {
 
-        float t = (clock.hour + (clock.minute == 30 ? .5f : 0)) / 12f;
-
-        if (t <= 1)
-        {
-            intensity = Mathf.Lerp(0.05f, 1, t);
-        }
-        else if (t > 1)
-        {
-            intensity = Mathf.Lerp(1, 0.05f, t - 1);
-        }
-        float initIntens = globalLight.intensity;
-
-        float t1 = 0;
-
-        while (globalLight.intensity != intensity)
-        {
-            globalLight.intensity = Mathf.Lerp(initIntens, intensity, t1);
-            t1 += .05f;
-            yield return new WaitForSeconds(.01f);
-        }
-
-    }
     bool[] events = { false, false, false, false, false, false };
     public void Events()
     {
@@ -230,9 +164,7 @@ public class TimeManager : MonoBehaviour
     }
     public void FastForwardTime()
     {
-        float aux = speed;
-        speed = ffSpeed;
-        ffSpeed = aux;
+        ff = !ff;
     }
     IEnumerator DelayEnd()
     {
@@ -244,7 +176,7 @@ public class TimeManager : MonoBehaviour
 [System.Serializable]
 public class Clock
 {
-    public int hour, minute, day = 1, year = 82;
+    public int day = 1, year = 82;
     [System.Serializable]
     public enum Month
     {

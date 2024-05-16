@@ -14,9 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   regionName: Tyrageti
   needs:
-  - material: {fileID: 11400000, guid: c579ebe7f9512824ba61f780ea34c0a5, type: 2}
+  - material: {fileID: 11400000, guid: 128e2322b8e800f4abb1e4e26075159d, type: 2}
     value: 1163
   - material: {fileID: 11400000, guid: c68a1942da5f2fa489599ae0b053447c, type: 2}
-    value: 354
-  - material: {fileID: 11400000, guid: 279690130d16aab46a7f46fe6a8df7fb, type: 2}
-    value: 172
+    value: 2300

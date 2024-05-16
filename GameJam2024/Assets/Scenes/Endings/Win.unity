@@ -276,10 +276,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d2fee7fb942a7d4ebfc242bae48f4f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  storyText: Victory is yours, noble ruler! ||| All 13 tribes now bow to your might.
-    ||| Each conquest a testament to your strength and vision. ||| But in the silence
-    of triumph, whispers of challenges yet remain. ||| Will your rule stand firm
-    against the winds of change, ||| Or will new threats emerge to test your sovereignty?
+  storyText: Victory is yours, noble assistant! ||| All 13 tribes now bow to your
+    might. ||| Each conquest a testament to your strength and vision. ||| But in
+    the silence of triumph, whispers of challenges yet remain. ||| Will your rule
+    stand firm against the winds of change, ||| Or will new threats emerge to test
+    your sovereignty?
   disableOnEnd: {fileID: 0}
   fader: {fileID: 1996844497}
 --- !u!114 &1045024619

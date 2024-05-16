@@ -60,7 +60,7 @@ public class RegionBehaviour : MonoBehaviour
         for (int i = 0; i < region.needs.Count; i++)
         {
             var need = region.needs[i];
-            foreach (var resource in stats.resources)
+            foreach (var resource in stats.resources.resources)
             {
                 if (need.material == resource.matSo)
                 {
@@ -110,7 +110,7 @@ public class RegionBehaviour : MonoBehaviour
             for (int i = 0; i < region.needs.Count; i++)
             {
                 var need = region.needs[i];
-                foreach (var resource in stats.resources)
+                foreach (var resource in stats.resources.resources)
                 {
                     if (need.material == resource.matSo)
                     {
@@ -134,7 +134,7 @@ public class RegionBehaviour : MonoBehaviour
         PlayerStats.Resource resource = null;
         if (conquered && level < 10)
         {
-            foreach (var r in stats.resources)
+            foreach (var r in stats.resources.resources)
             {
                 if (r.matSo == upgradeMaterial)
                 {
@@ -167,7 +167,7 @@ public class RegionBehaviour : MonoBehaviour
         {
             foreach (var mat in generatedMaterials)
             {
-                foreach (var res in stats.resources)
+                foreach (var res in stats.resources.resources)
                 {
                     //Debug.Log($"{mat.materialName}, {res.matSo.materialName}");
                     if (res.matSo == mat.matSo && CheckForReqLevel(mat))

@@ -15,15 +15,15 @@ public class StatViewer : MonoBehaviour
     List<resViewValue> resViewValues = new List<resViewValue>();
     private void Start()
     {
-        foreach (var res in stats.resources)
+        foreach (var res in stats.resources.resources)
         {
             var o = Instantiate(resourceViewPrefab, transform);
             o.transform.GetChild(0).GetComponent<Image>().sprite = res.matSo.icon;
-            o.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = res.matSo.materialName;
-            o.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().text = ValueToStringCompact(res.amount);
+            //o.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = res.matSo.materialName; //Sets the name in the stat viewer
+            o.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = ValueToStringCompact(res.amount);
             resViewValue temp = new resViewValue();
             temp.matSo = res.matSo;
-            temp.text = o.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>();
+            temp.text = o.transform.GetChild(0).GetChild(0).GetComponent<Text>();
             resViewValues.Add(temp);
         }
     }
@@ -50,7 +50,7 @@ public class StatViewer : MonoBehaviour
     }
     private void Update()
     {
-        foreach (var res in stats.resources)
+        foreach (var res in stats.resources.resources)
         {
             foreach (var o in resViewValues)
             {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    public List<Resource> resources;
+    public Resources resources;
     public int conqueredRegions = 0;
 
     [System.Serializable]
@@ -12,5 +12,10 @@ public class PlayerStats : MonoBehaviour
     {
         public MaterialSO matSo;
         public float amount;
+    }
+    [System.Serializable]
+    public class Resources
+    {
+        public Resource[] resources;
     }
 }

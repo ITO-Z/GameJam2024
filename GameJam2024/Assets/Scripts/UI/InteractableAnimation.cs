@@ -142,20 +142,21 @@ public class InteractableAnimation : MonoBehaviour
             yield return new WaitForSeconds(timeBtwMoves);
         }
         t = 0;
-        while (ao.rect.GetComponent<Image>().color != ao.finalCol)
-        {
-            ao.colorAnimation = true;
-            ao.curCol = Color32.Lerp(ao.initCol, ao.finalCol, t);
-            if (t >= .7f || t <= .3f)
-                t += .04f;
-            else if (t >= .85f || t <= .15f)
-                t += .05f;
-            else
-                t += .03f;
-            ao.rect.GetComponent<Image>().color = ao.curCol;
+        if (ao.animateColor)
+            while (ao.rect.GetComponent<Image>().color != ao.finalCol)
+            {
+                ao.colorAnimation = true;
+                ao.curCol = Color32.Lerp(ao.initCol, ao.finalCol, t);
+                if (t >= .7f || t <= .3f)
+                    t += .04f;
+                else if (t >= .85f || t <= .15f)
+                    t += .05f;
+                else
+                    t += .03f;
+                ao.rect.GetComponent<Image>().color = ao.curCol;
 
-            yield return new WaitForSeconds(timeBtwMoves);
-        }
+                yield return new WaitForSeconds(timeBtwMoves);
+            }
 
         if (ao.rect.gameObject == gameObject && animationSprites.Count != 0)
             if (ao.init)
@@ -215,6 +216,7 @@ public class InteractableAnimation : MonoBehaviour
         public Vector3 finalPos;
         public Vector3 finalRot;
         public Color32 finalCol;
+        public bool animateColor;
         [HideInInspector] public Vector3 initRot;
         [HideInInspector] public Vector3 initPos;
         [HideInInspector] public Color32 initCol;

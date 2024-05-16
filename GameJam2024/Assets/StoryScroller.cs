@@ -18,14 +18,22 @@ public class StoryScroller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        story = new List<string>();
-        var stryLines = storyText.Split("|||");
-        foreach (var o in stryLines)
+        if (!Camera.main.GetComponent<GameManager>().playerData.speechSeen)
         {
-            story.Add(o);
+            story = new List<string>();
+            var stryLines = storyText.Split("|||");
+            foreach (var o in stryLines)
+            {
+                story.Add(o);
+            }
+            text = GetComponent<Text>();
+            StartCoroutine(startParagraph());
+            Camera.main.GetComponent<GameManager>().playerData.speechSeen = true;
         }
-        text = GetComponent<Text>();
-        StartCoroutine(startParagraph());
+        else
+        {
+            disableOnEnd.SetActive(false);
+        }
     }
     IEnumerator startParagraph()
     {
@@ -59,7 +67,9 @@ public class StoryScroller : MonoBehaviour
             if (fader != null)
                 fader.FadeOutScene("MainMenu");
             else if (disableOnEnd != null)
+            {
                 disableOnEnd.SetActive(false);
+            }
         }
     }
 

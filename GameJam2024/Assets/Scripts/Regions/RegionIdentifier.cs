@@ -52,7 +52,7 @@ public class RegionIdentifier : MonoBehaviour
             }
 
         }
-
+        Camera.main.GetComponent<GameManager>().LoadGame();
     }
 }
 [System.Serializable]
