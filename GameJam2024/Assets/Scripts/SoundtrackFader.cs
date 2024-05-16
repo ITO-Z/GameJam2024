@@ -54,7 +54,7 @@ public class SoundtrackFader : MonoBehaviour
                 mata = true;
                 instance.PlaySoundtrack();
             }
-            audioSource.volume = Mathf.Lerp(fadeToZero ? .3f : 0, fadeToZero ? 0 : .3f, t);
+            audioSource.volume = Mathf.Lerp(fadeToZero ? .2f : 0, fadeToZero ? 0 : .2f, t);
             yield return null;
         }
 
