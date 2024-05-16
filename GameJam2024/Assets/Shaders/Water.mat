@@ -55,6 +55,7 @@ Material:
     - _BaseColor: {r: 0, g: 0.34916267, b: 0.5754717, a: 0}
     - _Color: {r: 0.070977226, g: 0.27653092, b: 0.5188679, a: 0}
     - _Direction: {r: 1, g: -1, b: 0, a: 0}
+    - _VignetteCenter: {r: -0.26, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &3007913686009858014
 MonoBehaviour:
