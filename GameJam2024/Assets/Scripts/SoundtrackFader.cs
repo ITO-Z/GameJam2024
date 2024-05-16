@@ -31,7 +31,7 @@ public class SoundtrackFader : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Debug.Log(audioSource.clip.length - audioSource.time);
+        //Debug.Log(audioSource.clip.length - audioSource.time);
         if (audioSource.isPlaying && !fading && !fadeOut)
         {
             if ((audioSource.clip.length - audioSource.time) <= fadeDuration)

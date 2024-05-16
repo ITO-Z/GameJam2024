@@ -31,10 +31,11 @@ public class TimeManager : MonoBehaviour
     };
     private void Start()
     {
-        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         durationCopy = duration;
-        clock.month = Clock.Month.January;
+        if (!Camera.main.GetComponent<GameManager>().CheckFilePath())
+            clock.month = Clock.Month.January;
         UpdateDateField();
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
     private void Update()
     {
@@ -53,7 +54,8 @@ public class TimeManager : MonoBehaviour
                 if (reg.conquered)
                 {
                     reg.GenerateMaterials();
-                    if(times%Random.Range(30, 50) == 0){
+                    if (times % Random.Range(30, 50) == 0)
+                    {
                         soundManager.Play(5);
                         times++;
                     }
@@ -71,7 +73,7 @@ public class TimeManager : MonoBehaviour
         {
             Events();
             startedRec = true;
-            durationCopy = duration / (ff ? 2f : 1f);
+            durationCopy = duration / (ff ? 2.5f : 1f);
             yield return new WaitForSeconds(durationCopy);
             Camera.main.GetComponent<GameManager>().SaveGame();
             #region Days

@@ -115,6 +115,10 @@ public class GameManager : MonoBehaviour
         else
             Debug.Log("There is nothing to delete!");
     }
+    public bool CheckFilePath()
+    {
+        return File.Exists(saveFilePath);
+    }
     [System.Serializable]
     public class PlayerData
     {

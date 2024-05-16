@@ -25,10 +25,12 @@ public class RegionBehaviour : MonoBehaviour
         public bool neededMaterials, neededRegionsConq;
     };
     [SerializeField] canBeConq canBeConquered;
-
-    public void Init()
+    private void Start()
     {
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+    }
+    public void Init()
+    {
         transform.GetChild(0).gameObject.SetActive(conquered);
         if (!conquered)
         {
@@ -38,6 +40,7 @@ public class RegionBehaviour : MonoBehaviour
                 q.enough = false;
                 q.matSo = o.material;
                 availableMatsForBuy.Add(q);
+                Debug.Log("add");
             }
         }
 
@@ -130,7 +133,8 @@ public class RegionBehaviour : MonoBehaviour
             log.SendMessageInLog($"{region.regionName} accepted your offer!", LogMessages.typeOfLogMessage.normal);
             soundManager.Play(2);
         }
-        else{
+        else
+        {
             log.SendMessageInLog($"Not enough resources to buy {region.regionName}", LogMessages.typeOfLogMessage.warning);
             soundManager.Play(3);
         }
@@ -159,7 +163,8 @@ public class RegionBehaviour : MonoBehaviour
                     log.SendMessageInLog($"Upgraded {gameObject.name} to level {level}");
                     soundManager.Play(4);
                 }
-                else{
+                else
+                {
                     soundManager.Play(3);
                     log.SendMessageInLog($"Not enough {upgradeMaterial.materialName}(s) to upgrade {region.regionName}", LogMessages.typeOfLogMessage.warning);
                 }

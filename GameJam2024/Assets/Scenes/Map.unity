@@ -4160,7 +4160,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -86, y: -102.40987}
+  m_AnchoredPosition: {x: -85.999985, y: -102.40987}
   m_SizeDelta: {x: 436, y: 512}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1063195838
@@ -6446,7 +6446,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 5
-  paymentsPerMonth: 5
+  paymentsPerMonth: 2
   timeInDays: 0
   timeInMonths: 1
   timeInYears: 0
