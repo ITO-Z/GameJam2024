@@ -181,7 +181,7 @@ public class RegionBehaviour : MonoBehaviour
     }
     public float ModifyMaterialAmountByLevel(GenerateMaterialsWithAmount mat)
     {
-        return mat.amount + (level - mat.levelNeededToGenerate) * (upgradeCost / 100f);
+        return (mat.amount + (level - mat.levelNeededToGenerate) * (upgradeCost / 100f)) * 2;
     }
     public bool CheckForReqLevel(GenerateMaterialsWithAmount mat)
     {

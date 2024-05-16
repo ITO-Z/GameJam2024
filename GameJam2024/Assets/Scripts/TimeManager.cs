@@ -8,7 +8,7 @@ public class TimeManager : MonoBehaviour
 {
     bool ff = false;
     [Tooltip("duration in seconds")] [SerializeField] float duration = 5;
-    [SerializeField] int paymentsPerMonth = 5;
+    [SerializeField] int paymentsPerMonth = 1;
     [SerializeField] bool timeInDays = false;
     [SerializeField] bool timeInMonths = false;
     [SerializeField] bool timeInYears = false;

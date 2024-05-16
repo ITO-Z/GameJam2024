@@ -3214,6 +3214,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac2aa3648c70de249a4fde2fb9e659d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerData:
+    regions: []
+    resources:
+      resources: []
+    conqueredRegions: 0
+    clock:
+      day: 1
+      year: 82
+      month: 0
+      bc: 1
+    speechSeen: 0
   regions:
   - {fileID: 1907771465}
   - {fileID: 1407763034}
