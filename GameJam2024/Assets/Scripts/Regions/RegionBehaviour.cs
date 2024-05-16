@@ -13,6 +13,8 @@ public class RegionBehaviour : MonoBehaviour
     public bool conquered;
     [SerializeField] RegionInfoBhvr infoBhvr;
 
+    private SoundManager soundManager;
+
     public int level = 1;
     public MaterialSO upgradeMaterial;
     public float upgradeCost = 0;
@@ -23,8 +25,10 @@ public class RegionBehaviour : MonoBehaviour
         public bool neededMaterials, neededRegionsConq;
     };
     [SerializeField] canBeConq canBeConquered;
+
     public void Init()
     {
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         transform.GetChild(0).gameObject.SetActive(conquered);
         if (!conquered)
         {
@@ -124,8 +128,12 @@ public class RegionBehaviour : MonoBehaviour
             transform.GetChild(0).gameObject.SetActive(true);
             infoBhvr.UpdateListInfo(region, generatedMaterials, this);
             log.SendMessageInLog($"{region.regionName} accepted your offer!", LogMessages.typeOfLogMessage.normal);
+            soundManager.Play(2);
         }
-        else log.SendMessageInLog($"Not enough resources to buy {region.regionName}", LogMessages.typeOfLogMessage.warning);
+        else{
+            log.SendMessageInLog($"Not enough resources to buy {region.regionName}", LogMessages.typeOfLogMessage.warning);
+            soundManager.Play(3);
+        }
 
     }
 
@@ -149,8 +157,12 @@ public class RegionBehaviour : MonoBehaviour
                     level++;
                     resource.amount -= upgradeCost;
                     log.SendMessageInLog($"Upgraded {gameObject.name} to level {level}");
+                    soundManager.Play(4);
                 }
-                else log.SendMessageInLog($"Not enough {upgradeMaterial.materialName}(s) to upgrade {region.regionName}", LogMessages.typeOfLogMessage.warning);
+                else{
+                    soundManager.Play(3);
+                    log.SendMessageInLog($"Not enough {upgradeMaterial.materialName}(s) to upgrade {region.regionName}", LogMessages.typeOfLogMessage.warning);
+                }
             }
         }
         upgradeCost = upCostConst * level / (2.5f + region.needs.Count);

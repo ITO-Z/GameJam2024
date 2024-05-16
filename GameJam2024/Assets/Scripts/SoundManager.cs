@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
@@ -43,6 +44,7 @@ public class SoundManager : MonoBehaviour
     {
         PlaySound(SoundAudioClipArray[type]);
     }
+
     void PlaySound(SoundAudioClip soundAudioClip)
     {
         GameObject soundGameObject = new GameObject((soundAudioClip.sound == Sound.Soundtrack ? "Soundtrack" : "Sound"));
@@ -57,6 +59,7 @@ public class SoundManager : MonoBehaviour
         else
         {
             audioSource.clip = soundAudioClip.audioClip[UnityEngine.Random.Range(0, soundAudioClip.audioClip.Length)];
+            audioSource.volume = 0.5f;
             audioSource.Play();
             soundGameObject.AddComponent<DestroySFX>();
         }

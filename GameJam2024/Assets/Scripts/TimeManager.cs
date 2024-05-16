@@ -20,6 +20,10 @@ public class TimeManager : MonoBehaviour
     [SerializeField] RegionBehaviour[] regionBehaviours;
     [SerializeField] LogMessages log;
     float durationCopy;
+
+    private SoundManager soundManager;
+    private int times = 0;
+
     [System.Serializable]
     public struct date
     {
@@ -27,6 +31,7 @@ public class TimeManager : MonoBehaviour
     };
     private void Start()
     {
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         durationCopy = duration;
         clock.month = Clock.Month.January;
         UpdateDateField();
@@ -48,6 +53,10 @@ public class TimeManager : MonoBehaviour
                 if (reg.conquered)
                 {
                     reg.GenerateMaterials();
+                    if(times%Random.Range(30, 50) == 0){
+                        soundManager.Play(5);
+                        times++;
+                    }
                 }
             }
 
@@ -60,6 +69,7 @@ public class TimeManager : MonoBehaviour
     {
         if (!startedRec)
         {
+            Events();
             startedRec = true;
             durationCopy = duration / (ff ? 2f : 1f);
             yield return new WaitForSeconds(durationCopy);

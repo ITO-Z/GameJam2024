@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SoundtrackFader : MonoBehaviour
 {
+    public static SoundtrackFader soundtrackFader;
     [SerializeField] float fadeDuration = 10;
     AudioSource audioSource;
     bool fading;
@@ -12,6 +13,15 @@ public class SoundtrackFader : MonoBehaviour
 
     void Awake()
     {
+        if (soundtrackFader == null)
+        {
+            soundtrackFader = this;
+            DontDestroyOnLoad(soundtrackFader);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         audioSource = GetComponent<AudioSource>();
         audioSource.volume = 0;
         fading = true;
@@ -44,7 +54,7 @@ public class SoundtrackFader : MonoBehaviour
                 mata = true;
                 instance.PlaySoundtrack();
             }
-            audioSource.volume = Mathf.Lerp(fadeToZero ? .5f : 0, fadeToZero ? 0 : .5f, t);
+            audioSource.volume = Mathf.Lerp(fadeToZero ? .3f : 0, fadeToZero ? 0 : .3f, t);
             yield return null;
         }
 
